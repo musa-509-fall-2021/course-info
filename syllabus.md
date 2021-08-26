@@ -13,9 +13,9 @@ Besides the technologies used in class, we will be using large and sometimes mes
 The class is divided into four modules:
 
 1. **Spatial Analytics with Databases** -- learn the basics of SQL and PostGIS for exploring datasets and answering questions of your data
-2. **Python and SQL** -- building basic scripts with queries and interacting with web services/APIs programmatically
-3. **Data Pipelining** -- use Python and SQL to automate extracting, transforming, and loading data into a data warehouse
-4. **Building Dashboards** -- build a dashboard to answer operational questions using visualizations of dynamic data
+2. **Scripting with Python and SQL** -- building basic scripts with queries and interacting with web services/APIs programmatically
+3. **Building Dashboards** -- build a dashboard to answer operational questions using visualizations of dynamic data
+4. **Data Pipelining** -- use Python and SQL to automate extracting, transforming, and loading data into a data warehouse
 
 ## Course Objectives
 
