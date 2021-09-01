@@ -6,3 +6,4 @@
 
 * [Syllabus](syllabus.md)
 * [Schedule](schedule.md)
+* [Tips for Hybrid](hybrid-tips.md)
