@@ -1,6 +1,6 @@
-# Operating in a Hybrid In-person/Virtual Environment
+# Tips for Operating in a Hybrid In-person/Virtual Environment
 
-This course will be explicitly and intentionally hybrid. This means that we are all going to have to work together to ensure parity as much as possible in the in-person and virtual experiences. Additionally, someone will act as the "Assistant Facilitator" each lecture session to ensure that someone is keeping an eye on the virtual experience.
+This course will be explicitly and intentionally hybrid. This means that we are all going to have to work together to ensure parity as much as possible in the in-person and virtual experiences. Additionally, one of the in-person class participants will act as the "Assistant Facilitator" each lecture session to ensure that someone is keeping an eye on the virtual experience.
 
 ## How to participate virtually
 
@@ -19,6 +19,6 @@ This course will be explicitly and intentionally hybrid. This means that we are 
 
 ## How to be an assistant-facilitator
 
-* Join the virtual room
+* Join the virtual room, as above
 * Keep an eye on the chat and the raised hands
 * At the soonest convenient moment, let the presenter know about the message or the raised hand
