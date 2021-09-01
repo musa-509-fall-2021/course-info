@@ -12,6 +12,7 @@
 * **IMPORTANT:** Fill out the [Intro Questionnaire](https://docs.google.com/forms/d/e/1FAIpQLScbSGxnoKgG5oXGTnK_ev3M_TtGamnTBfXeSoHxUrLITLrq9A/viewform?usp=sf_link)
 * [Sign up for GitHub Student Dev Pack](https://education.github.com/pack)
   * Once you get access (it may take a day or four), sign up for a CARTO account through the Dev Pack site
+* [Join](https://join.slack.com/t/musa509610/signup) the class slack organization, and complete the [Slack intro](slack-intro.md) steps.
 * SQL practice on Codecademy: complete "Manipulation" and "Queries" in the (free) Learn SQL course on Codecademy: https://www.codecademy.com/learn/learn-sql
 
 ## Resources
