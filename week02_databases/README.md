@@ -11,6 +11,7 @@
 
 For this week:
 * SQL practice on Codecademy: complete "Aggregate Functions" in the (free) Learn SQL course on Codecademy: https://www.codecademy.com/learn/learn-sql
+* [Assignment #1](https://github.com/musa-509-fall-2021/assignment-01-intro-to-geographic-queries)
 
 Still important from last week:
 * **IMPORTANT:** Fill out the [Intro Questionnaire](https://docs.google.com/forms/d/e/1FAIpQLScbSGxnoKgG5oXGTnK_ev3M_TtGamnTBfXeSoHxUrLITLrq9A/viewform?usp=sf_link)
