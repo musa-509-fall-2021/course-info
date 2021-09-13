@@ -42,7 +42,7 @@ We should now be able to filter all the stations added after a given date:
 
 ```sql
 select * from indego_stations
-where go_live_date > '5/3/2016'
+where to_date(go_live_date, 'MM/DD/YYYY') > '2016-05-03'::date
 ```
 
 To ensure that we don't have anything earlier than May 3, 2016, let's order by `go_live_date`:
