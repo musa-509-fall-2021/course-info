@@ -5,7 +5,7 @@
 |----------|----------------|------------|---------|---------------|
 |  1   |  Sep 1   |          |  Introduction  |  [Slides & Assignments](week01_introductions/)  |
 |  2   |  Sep 8   |          |  _Analytics_: Spatial Databases & Querying  |  [Slides & Assignments](week02_introductions/)  |
-|  3   |  Sep 13  |  Sep 15  |  _Analytics_: PostGIS & Geographical SQL Operations  |    |
+|  3   |  Sep 13  |  Sep 15  |  _Analytics_: PostGIS & Geographical SQL Operations  |  [Slides & Assignments](week03_postgis/)  |
 |  4   |  Sep 20  |  Sep 22  |  _Analytics_: Advanced PostGIS  |    |
 |  5   |  Sep 27  |  Sep 29  |  _Analytics_: GIS in Data Warehouses (with BigQuery)  |    |
 |  6   |  Oct 4   |  Oct 6   |  _Scripting_: Python for Geographical Analysis  |    |
