@@ -5,7 +5,9 @@
 
 ## Lab
 
-(Coming soon...)
+* [Worksheet](https://github.com/musa-509-fall-2021/lab-01-working-with-git)
+* [Answers](https://github.com/musa-509-fall-2021/lab-01-working-with-git/pull/4)
+* [Video walk-through explanation of answers](https://youtu.be/YvxQfM5rAcE)
 
 ## Assignments
 
