@@ -6,7 +6,7 @@
 ## Lab
 
 * [Setting Up PostGIS Locally](https://github.com/musa-509-fall-2021/course-info/week06_data_in_python/postgis_setup.md)
-* [Setting Up a Python Dev Environment](https://github.com/musa-509-fall-2021/course-info/week06_data_in_python/python_setup.md)
+* [Python script for loading data into a database](https://github.com/musa-509-fall-2021/course-info/week06_data_in_python/getting_started/)
 
 ## Assignments
 
