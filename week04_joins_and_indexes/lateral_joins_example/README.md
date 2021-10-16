@@ -73,6 +73,30 @@ left join lateral (
     on true;
 ```
 
+## Optimizing the solution
+
+The code above in _**Query 2**_ will work, but on my computer it took **two hours!** It is not necessary for this query to take that long, but we haven't given PostgreSQL any hints about how it might optimize. In our `credit_cards` table we have 100,000 records, and in the `credit_card_purchases` table we have 1,000,000 records. If we have to search through the purchases table for the latest transactions, and we have to do that for each credit card, that's a total of 100,000 * 1,000,000 = 100,000,000,000 (100 billion) individual evaluations! Computers are fast, but they can only do so much.
+
+We can give PostgreSQL hints about where it can optimize our query in the form of indexes. In particular, any time we're using an expression to sort, filter, or join a table, we might want to consider creating an index so that PostgreSQL doesn't have to look through the entire table to find the relevant information.
+
+Here is the query plan that PostgreSQL puts together for my query. Notice the only types of scans that we're doing are sequential scans:
+![Query plan without indexes](without-indexes.png)
+
+In our case, we're using the `credit_card_purchases.purchase_dt` field to sort, and the `credit_card_purchases.cc_number` field to join. Both of those are good candidates for adding indexes. It doesn't hurt to add indexes on both (though I suspect we'll get the most value out of the `cc_number` index).
+
+```sql
+create index credit_card_purchases__cc_number__idx
+    on credit_card_purchases
+    using btree (cc_number);
+
+create index credit_card_purchases__purchase_dt__idx
+    on credit_card_purchases
+    using btree (purchase_dt);
+```
+
+After applying the above indexes, my query takes about **2.5 seconds.** The query plan that PostgreSQL uses now is below. Notice that we are no longer sequential scanning through the `credit_card_purchases` table (instead we're doing a [_Bitmap Index Scan_ followed by a _Bitmap Heap Scan_](https://pganalyze.com/docs/explain/scan-nodes/bitmap-index-scan)):
+![Query plan with indexes](with-indexes.png)
+
 ## In summary...
 
 Any time you have a task to get a finite number of ordered records from a table _`X`_ with respect to the records in some other table _`Y`_, if you're working in PostgreSQL you can take advantage of `lateral` joins. Think first about how you can retrieve the correct number of records from table _`X`_ given just one of the records of _Y_ (as in _**Query 1**_ above). Then take your query and wrap it in a parent query on table _`Y`_ (as in _**Query 2**_ above).
