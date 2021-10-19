@@ -15,4 +15,4 @@ For this week:
 
 ## Resources
 * [Video recording of lab 04 "answers"](https://github.com/musa-509-fall-2021/lab-04-pipelines-and-web-services/tree/answers)
-* [Google Cloud Storage Python client library](https://cloud.google.com/storage/docs/reference/libraries#client-libraries-install-python)
+* [Google Cloud Storage Python client library](https://cloud.google.com/storage/docs/reference/libraries#client-libraries-install-python) (_Note that files are called objects in Google Cloud Storage terminology, so the use of the terms "object" and "file" are often used interchangeably_)
