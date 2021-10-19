@@ -15,3 +15,4 @@ For this week:
 
 ## Resources
 * [Google Cloud Storage Python client library](https://cloud.google.com/storage/docs/reference/libraries#client-libraries-install-python) (_Note that files are called objects in Google Cloud Storage terminology, so the use of the terms "object" and "file" are often used interchangeably_)
+* [Redhat - Understanding cloud-native applications: Stateful vs stateless](https://www.redhat.com/en/topics/cloud-native-apps/stateful-vs-stateless)
