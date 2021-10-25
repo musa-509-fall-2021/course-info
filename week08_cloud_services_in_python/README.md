@@ -5,7 +5,7 @@
 
 ## Lab
 
-(...)
+* [Worksheet](https://github.com/musa-509-fall-2021/lab-05-pipelines-and-cloud-services)
 
 ## Assignments
 
