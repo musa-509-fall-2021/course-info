@@ -1,0 +1,32 @@
+## Git/GitHub
+
+### Collaborating on a Repository
+
+Collaborating with git can be simple. You do not need to worry about branching, code reviews, pull requests, etc. if you are just working with a small group on a personal project.
+
+1. [Create a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository) on one group member's account.
+2. Invite other group members as [collaborators](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-user-account/managing-access-to-your-personal-repositories/inviting-collaborators-to-a-personal-repository) to the repository.
+3. [Clone the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) to each group member's computer.
+4. When you make changes to the code:
+   * Commit frequently.
+   * Try not to include too many changes in one git commit.
+   * Pull/push your _working_ code frequently.
+   * Always write a meaningful git commit message.
+   Read [these tips for creating meaningful git commits](https://reflectoring.io/meaningful-commit-messages/).
+
+### Resolving Merge Conflicts
+
+Code conflicts will be minimized if you remember to:
+* Commit frequently.
+* Try not to include too many changes in one git commit.
+* Pull/push your _working_ code frequently.
+
+However, unavoidably, eventually there will be some lines in your code that conflict with a collaborator's. Don't panic, this is normal. Read this [Atlassian Guide to Git Merge Conflicts](https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts) (or you can skip straight to the sections on [identifying and resolving conflicts](https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts#:~:text=How%20to%20identify%20merge%20conflicts)).
+
+### Excellent Guides to Git
+
+* [Beanstalk Guides](http://guides.beanstalkapp.com)
+* [Atlassian Git Tutorials](https://www.atlassian.com/git/tutorials)
+* [GitHub Guides Quickstart](https://docs.github.com/en/get-started/quickstart)
+* [Git Cheatsheet](https://education.github.com/git-cheat-sheet-education.pdf) (it's dense)
+* **And, for when you're in a bind: [Git happens! 6 Common Git mistakes and how to fix them](https://about.gitlab.com/blog/2018/08/08/git-happens/)**
