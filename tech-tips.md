@@ -1,3 +1,17 @@
+**Contents:**
+* [Git/GitHub](#gitgithub)
+  * [Collaborating on a Repository](#collaborating-on-a-repository)
+  * [Resolving Merge Conflicts](#resolving-merge-conflicts)
+  * [Excellent Guides to Git](#excellent-guides-to-git)
+* [Mapping in JS](#mapping-in-js)
+  * [Put a Leaflet map on a page](#put-a-leaflet-map-on-a-page)
+  * [Use a different base layer](#use-a-different-base-layer)
+  * [Add a GeoJSON-formatted data layer](#add-a-geojson-formatted-data-layer)
+  * [Add multiple GeoJSON layers with a toggle control](#add-multiple-geojson-layers-with-a-toggle-control)
+  * [Style GeoJSON data based on data parameters](#style-geojson-data-based-on-data-parameters)
+    * [Color features by discrete category values](#color-features-by-discrete-category-values)
+    * [Color features by a continuous value](#color-features-by-a-continuous-value)
+
 ## Git/GitHub
 
 ### Collaborating on a Repository
@@ -73,7 +87,7 @@ At the end of your body, add:
 </script>
 ```
 
-## Use a different base layer
+### Use a different base layer
 
 [Stamen](http://maps.stamen.com/) produced some nice map tiles that they make available for free. Paste the following code into the appropriate place above (where it says `var baseLayer =`):
 
@@ -125,3 +139,119 @@ fetch('https://storage.googleapis.com/mjumbewu_musa_509/lab08_maps_and_charts_in
 
 * Leaflet's documentation on [Using GeoJSON](https://leafletjs.com/examples/geojson/).
 * More information about GeoJSON (from HERE): [An Introduction to GeoJSON](https://developer.here.com/blog/an-introduction-to-geojson)
+
+### Add multiple GeoJSON layers with a toggle control
+
+After adding the base layer to the map, add the following code:
+
+```js
+var mapdataA = /* Your GeoJSON goes here */;
+var dataLayerA = L.geoJSON(mapdataB)
+dataLayerA.addTo(map1);
+
+var mapdataB = /* Your GeoJSON goes here */;
+var dataLayerB = L.geoJSON(mapdataB)
+dataLayerB.addTo(map1);
+
+L.control.layers({
+  'First layer label': dataLayerA,
+  'Second layer label': dataLayerB
+})
+```
+
+OR, if your GeoJSON is available on the web with URL:
+
+```js
+var dataLayerA = L.geoJSON(null)
+dataLayerA.addTo(map1);
+
+var dataLayerB = L.geoJSON(null)
+dataLayerB.addTo(map1);
+
+L.control.layers({
+  'First layer label': dataLayerA,
+  'Second layer label': dataLayerB
+})
+
+// Your first GeoJSON URL goes below...
+fetch('https://storage.googleapis.com/mjumbewu_musa_509/lab08_maps_and_charts_in_html/mapdata.json')
+.then(response => response.json())
+.then(mapdata => {
+  dataLayerA.addData(mapdata)
+});
+
+// Your second GeoJSON URL goes below...
+fetch('https://storage.googleapis.com/mjumbewu_musa_509/lab08_maps_and_charts_in_html/mapdata.json')
+.then(response => response.json())
+.then(mapdata => {
+  dataLayerB.addData(mapdata)
+});
+```
+
+### Style GeoJSON data based on data parameters
+
+The following set a few Leaflet style parameters. See the [Leaflet docs](https://leafletjs.com/reference.html#path-option) for all the different style parameters you can set.
+
+#### Color features by discrete category values
+
+Assuming your data has a field named `my_category` (_note that anything between `/*` and `*/` is a code comment_):
+
+```js
+function getStyle(feature) {
+  var category = feature.properties['my_category'];
+  var featureColor;
+
+  switch (category) {
+    case 'VALUE 1 GOES HERE': featureColor = 'red'; break;
+    case 'VALUE 2 GOES HERE': featureColor = 'blue'; break;
+    case 'VALUE 3 GOES HERE': featureColor = 'green'; break;
+    default:                  featureColor = '#7570b3'; break;
+  }
+
+  return {
+    color: featureColor,
+    weight: 2,
+    fillColor: featureColor,
+    fillOpacity: 0.5
+  };
+}
+
+var dataLayer = L.geoJSON(/* mapdata OR null GOES HERE*/, {
+  style: getStyle
+})
+dataLayer.addTo(map1);
+```
+
+You can find the colors that you can specify by name [here](https://htmlcolorcodes.com/color-names/), and [ColorBrewer](https://colorbrewer2.org/) is a useful tool for choosing choropleth color codes.
+
+#### Color features by a continuous value
+
+You can use D3 to create a linearly interpolated color range. After including the leaflet library, add the following to include the D3 library:
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"
+ integrity="sha512-FHsFVKQ/T1KWJDGSbrUhTJyS1ph3eRrxI228ND0EGaEp6v4a/vGwPWd3Dtd/+9cI7ccofZvl/wulICEurHN1pg=="
+ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+```
+
+Then, assuming your data includes a field called `my_scaled_value` that is scaled to be in the range [0-1], add the following javascript into a `script` element:
+
+```js
+function getStyle(feature) {
+  var scaledValue = feature.properties['my_scaled_value'];
+  var interpolator = d3.interpolate('#e5f5f9', '#2ca25f')
+  var featureColor = interpolator(scaledValue);
+
+  return {
+    color: featureColor,
+    weight: 2,
+    fillColor: featureColor,
+    fillOpacity: 0.5
+  };
+}
+
+var dataLayer = L.geoJSON(/* mapdata OR null GOES HERE*/, {
+  style: getStyle
+})
+dataLayer.addTo(map1);
+```
