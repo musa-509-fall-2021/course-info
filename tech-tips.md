@@ -106,14 +106,14 @@ After adding the base layer to the map, add the following code:
 ```js
 var mapdata = /* Your GeoJSON goes here */;
 var dataLayer = L.geoJSON(mapdata)
-dataLayer.addTo(map);
+dataLayer.addTo(map1);
 ```
 
 OR, if your GeoJSON is available on the web with URL:
 
 ```js
-var dataLayer = L.geoJSON(mapdata)
-dataLayer.addTo(map);
+var dataLayer = L.geoJSON(null)
+dataLayer.addTo(map1);
 
 // Your GeoJSON URL goes below...
 fetch('https://storage.googleapis.com/mjumbewu_musa_509/lab08_maps_and_charts_in_html/mapdata.json')
