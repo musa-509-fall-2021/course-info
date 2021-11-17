@@ -1,0 +1,34 @@
+<html>
+<head>
+  <title>Sample Jinja Template</title>
+</head>
+
+<body>
+  <h1>{{ course.title }}</h1>
+  <p>
+    The course "{{ course.title }}" meets
+    {% if course.is_virtual %}
+      virtually
+    {% else %}
+      in room {{ course.room }}
+    {% endif %}
+    every {{ course.days }}.
+  </p>
+
+  <h2>Instructor</h2>
+  <ul>
+    <li>
+      {{ course.instructor_name }}
+    </li>
+  </ul>
+
+  <h2>Students</h2>
+  <ul>
+    {% for student_name in course.student_names %}
+      <li>
+        {{ student_name }}
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
