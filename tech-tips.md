@@ -109,19 +109,19 @@ For all of your pipeline scripts, you should have a `GOOGLE_APPLICATION_CREDENTI
 
 * _conda:_
   ```bash
-  conda env config vars set GOOGLE_APPLICATION_CREDENTIALS="PATH TO KEY   FILE GOES HERE"
+  conda env config vars set GOOGLE_APPLICATION_CREDENTIALS="PATH TO KEY FILE GOES HERE"
   ```
 
 * _poetry:_
   ```bash
   poetry add python-dotenv[cli]
-  echo "GOOGLE_APPLICATION_CREDENTIALS='PATH TO KEY FILE GOES HERE'" >>   .env
+  echo "GOOGLE_APPLICATION_CREDENTIALS='PATH TO KEY FILE GOES HERE'" >> .env
   ```
 
 * In a _Jupyter Notebook:_ (add the following to a cell)
   ```python
   import os
-  os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'PATH TO KEY FILE GOES   HERE'
+  os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'PATH TO KEY FILE GOES HERE'
   ```
 
 To run a script locally, for testing/debugging purposes, if you are in the root folder of your project in your terminal:
