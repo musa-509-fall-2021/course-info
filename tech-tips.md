@@ -3,6 +3,14 @@
   * [Collaborating on a Repository](#collaborating-on-a-repository)
   * [Resolving Merge Conflicts](#resolving-merge-conflicts)
   * [Excellent Guides to Git](#excellent-guides-to-git)
+* [Extracting, Transforming, and Loading Data](#extracting-transforming-and-loading-data)
+  * [Setting up your folder structure](#setting-up-your-folder-structure)
+  * [Setting up your environment for development](#setting-up-your-environment-for-development)
+  * [Running a script in your local environment](#running-a-script-in-your-local-environment)
+  * [Writing an extract module](#writing-an-extract-module)
+  * [Writing a load module for non-geospatial data](#writing-a-load-module-for-non-geospatial-data)
+  * [Writing a load module for geospatial data](#writing-a-load-module-for-geospatial-data)
+  * [Writing an Airflow DAG for a pipeline](#writing-an-Airflow-DAG-for-a-pipeline)
 * [Mapping in JS](#mapping-in-js)
   * [Put a Leaflet map on a page](#put-a-leaflet-map-on-a-page)
   * [Use a different base layer](#use-a-different-base-layer)
@@ -44,6 +52,252 @@ However, unavoidably, eventually there will be some lines in your code that conf
 * [GitHub Guides Quickstart](https://docs.github.com/en/get-started/quickstart)
 * [Git Cheatsheet](https://education.github.com/git-cheat-sheet-education.pdf) (it's dense)
 * **And, for when you're in a bind: [Git happens! 6 Common Git mistakes and how to fix them](https://about.gitlab.com/blog/2018/08/08/git-happens/)**
+
+## Extracting, Transforming, and Loading Data
+
+### Setting up your folder structure
+
+```
+📂 airflow
+  📂 dags
+    📂 data_pipeline
+      📂 sql
+        📂 staging
+          📄 transformed_staging_model1.sql
+          📄 transformed_staging_model2.sql
+        📂 final
+          📄 transformed_final_model1.sql
+          📄 transformed_final_model2.sql
+      📄 __init__.py
+      📄 extract_dataset1.py
+      📄 extract_dataset2.py
+      📄 load_dataset1.py
+      📄 load_dataset2.py
+  📂 plugins
+    📄 pipeline_tools.py
+```
+
+The **dags/** folder is where all your DAGs live. In the example above, the name of the **data_pipeline/** folder is arbitrary -- we could name it anything.
+
+The **plugins/** folder folder contains all the code that might be used across multiple DAGs.
+
+### Setting up your environment for development
+
+I recommend you use either **conda** or **poetry** to manage your environment. The following packages should probably be added to your environment:
+* pandas
+* geopandas
+* pandas-gbq
+* google-cloud-storage
+* google-cloud-bigquery-storage
+* jinja2
+
+When you're working on your project, activate your environment in a shell:
+
+_conda:_
+```bash
+conda activate YOUR_ENVIRONMENT_NAME
+```
+
+_poetry:_ (from within your project folder...)
+```bash
+poetry shell
+```
+
+### Running a script in your local environment
+
+For all of your pipeline scripts, you should have a `GOOGLE_APPLICATION_CREDENTIALS` environment variable set. There are many ways you can do this. Here are a few:
+
+* _conda:_
+  ```bash
+  conda env config vars set GOOGLE_APPLICATION_CREDENTIALS="PATH TO KEY   FILE GOES HERE"
+  ```
+
+* _poetry:_
+  ```bash
+  poetry add python-dotenv[cli]
+  echo "GOOGLE_APPLICATION_CREDENTIALS='PATH TO KEY FILE GOES HERE'" >>   .env
+  ```
+
+* In a _Jupyter Notebook:_ (add the following to a cell)
+  ```python
+  import os
+  os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'PATH TO KEY FILE GOES   HERE'
+  ```
+
+To run a script locally, for testing/debugging purposes, if you are in the root folder of your project in your terminal:
+
+```bash
+python airflow/dags/data_pipeline/extract_dataset1.py
+```
+
+**If you're using a _.env_ file for your environment variables, prefix your commands with `dotenv run`.**
+
+### Writing an **extract** module
+
+```python
+from pipeline_tools import http_to_gcs
+
+DATA_URL = '...'  # <-- The URL where the data comes from
+BUCKET_NAME = '...'  # <-- The name of the Google Cloud Storage bucket
+DATA_PATH = '...'  # <-- Where the file will be stored in the bucket
+
+def main():
+    http_to_gcs(
+        request_method='get',
+        request_url=DATA_URL,
+        gcs_bucket_name=BUCKET_NAME,
+        gcs_blob_name=DATA_PATH.format(ds=ds),
+    )
+
+if __name__ == '__main__':
+    main()
+```
+
+### Writing a **load** module for non-geospatial data
+
+```python
+from pipeline_tools import gcs_to_local_file, geopandas_to_gbq
+import pandas as pd
+
+# Google Cloud Storage information
+BUCKET_NAME = '...'
+DATA_PATH = '...'
+
+# Google BigQuery information
+DATASET_NAME = '...'
+TABLE_NAME = '...'
+
+def main():
+    local_path = gcs_to_local_file(
+        gcs_bucket_name=BUCKET_NAME,
+        gcs_blob_name=DATA_PATH,
+    )
+    df = pd.read_csv(local_path)
+    df.to_gbq(f'{DATASET_NAME}.{TABLE_NAME}')
+
+if __name__ == '__main__':
+    main()
+```
+
+### Writing a **load** module for geospatial data
+
+```python
+from pipeline_tools import gcs_to_local_file, geopandas_to_gbq
+import geopandas as gpd
+
+# Google Cloud Storage information
+BUCKET_NAME = '...'
+DATA_PATH = '...'
+
+# Google BigQuery information
+DATASET_NAME = '...'
+TABLE_NAME = '...'
+
+def main():
+    local_path = gcs_to_local_file(
+        gcs_bucket_name=BUCKET_NAME,
+        gcs_blob_name=DATA_PATH,
+    )
+    gdf = gpd.read_file(local_path)
+    geopandas_to_gbq(
+        geodataframe=gdf,
+        dataset_name=DATASET_NAME,
+        table_name=TABLE_NAME,
+    )
+
+if __name__ == '__main__':
+    main()
+```
+
+### Writing an Airflow DAG for a pipeline
+
+```python
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from datetime import datetime
+
+from . import extract_dataset1
+from . import extract_dataset2
+...
+from . import load_dataset1
+from . import load_dataset2
+...
+
+with DAG(dag_id='data_pipeline',
+         schedule_interval='@monthly',
+         start_date=datetime(2021, 10, 22),
+         catchup=False) as dag:
+
+    extract_dataset1 = PythonOperator(
+        task_id='extract_dataset1',
+        python_callable=extract_dataset1.main,
+    )
+
+    extract_dataset2 = PythonOperator(
+        task_id='extract_dataset2',
+        python_callable=extract_dataset2.main,
+    )
+
+    ...
+
+    load_dataset1 = PythonOperator(
+        task_id='load_dataset1',
+        python_callable=load_dataset1.main,
+    )
+
+    load_dataset2 = PythonOperator(
+        task_id='load_dataset2',
+        python_callable=load_dataset2.main,
+    )
+
+    ...
+
+    transform_staging_model1 = PythonOperator(
+        task_id='transform_staging_model1',
+        python_callable=run_transform_gbq,
+        op_args=['staging', 'transformed_staging_model1', sql_dir]
+    )
+
+    transform_staging_model2 = PythonOperator(
+        task_id='transform_staging_model2',
+        python_callable=run_transform_gbq,
+        op_args=['staging', 'transformed_staging_model2', sql_dir]
+    )
+
+    transform_final_model1 = PythonOperator(
+        task_id='transform_final_model1',
+        python_callable=run_transform_gbq,
+        op_args=['final', 'transformed_final_model1', sql_dir]
+    )
+
+    transform_final_model2 = PythonOperator(
+        task_id='transform_final_model2',
+        python_callable=run_transform_gbq,
+        op_args=['final', 'transformed_final_model2', sql_dir]
+    )
+
+    ...
+
+    # There are a few ways you can set up dependencies between tasks.
+    # When you say "A >> B", it means that task B depends on task A.
+    extract_dataset1 >> load_dataset1
+    extract_dataset2 >> load_dataset2
+
+    # When you say "D << [A, B, C]" it means task D depends on each of
+    # tasks A, B, and C.
+    transform_staging_model1 << [extract_dataset1, extract_dataset2, ...]
+    transform_staging_model2 << [extract_dataset1, extract_dataset2, ...]
+
+    # It doesn't matter what order you specify dependencies, as long
+    # as you specify them all.
+    transform_staging_model1 >> transform_final_model1
+    transform_staging_model1 >> transform_final_model2
+    transform_staging_model2 >> transform_final_model2
+```
+
+The above DAG definition would result in dependency graph like the following:
+
+![Sample DAG dependency graph](sample-dependency-graph.png)
 
 ## Mapping in JS
 
