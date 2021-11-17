@@ -124,13 +124,13 @@ For all of your pipeline scripts, you should have a `GOOGLE_APPLICATION_CREDENTI
   os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'PATH TO KEY FILE GOES HERE'
   ```
 
-To run a script locally, for testing/debugging purposes, if you are in the root folder of your project in your terminal:
+To run a script locally, for testing/debugging purposes, if you are in the root folder of your project in your terminal, e.g.:
 
 ```bash
 python airflow/dags/data_pipeline/extract_dataset1.py
 ```
 
-**If you're using a _.env_ file for your environment variables, prefix your commands with `dotenv run`.**
+> **If you're using a _.env_ file for your environment variables, prefix your commands with `dotenv run`.**
 
 ### Writing an **extract** module
 
