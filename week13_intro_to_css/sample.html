@@ -1,0 +1,55 @@
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <!-- If you have your CSS in a different file, you can refer to it like this:
+
+  <link rel="stylesheet" href="style.css">
+
+  -->
+
+  <style>
+    body {
+      display: grid;
+      grid-template-areas:
+        "header menu"
+        "header content";
+      grid-template-columns: auto 1fr;
+      background-color: #e0e0ef;
+      color: #404040;
+      font-family: sans-serif;
+    }
+
+    .content {
+      grid-area: content;
+    }
+
+    h1 {
+      font-family: 'Indie Flower', cursive;
+      font-weight: normal;
+      font-size: 2em;
+      grid-area: header;
+    }
+
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>COVID-19</h1>
+  <div class="content">
+    <p>
+      <strong>Coronavirus disease 2019 (COVID-19)</strong> is a contagious disease caused by severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2). The first known case was identified in Wuhan, China, in December 2019.[7] The disease has since spread worldwide, leading to an <a href="https://en.wikipedia.org/wiki/COVID-19_pandemic">ongoing pandemic</a>.
+    </p>
+    <p>
+      Symptoms of COVID-19 are variable, but often include fever,[9] cough, headache,[10] fatigue, breathing difficulties, and loss of smell and taste.[11][12][13] Symptoms may begin one to fourteen days after exposure to the virus. At least a third of people who are infected do not develop noticeable symptoms.[14] Of those people who develop symptoms noticeable enough to be classed as patients, most (81%) develop mild to moderate symptoms (up to mild pneumonia), while 14% develop severe symptoms (dyspnea, hypoxia, or more than 50% lung involvement on imaging), and 5% suffer critical symptoms (respiratory failure, shock, or multiorgan dysfunction).[15] Older people are at a higher risk of developing severe symptoms. Some people continue to experience a range of effects (long COVID) for months after recovery, and damage to organs has been observed.[16] Multi-year studies are underway to further investigate the long-term effects of the disease.[16]
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Fphar-11-00937-g001.jpg/250px-Fphar-11-00937-g001.jpg">
+    </p>
+  </div>
+</body>
+</html>
