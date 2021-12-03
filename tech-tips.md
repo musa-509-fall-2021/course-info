@@ -19,6 +19,8 @@
   * [Style GeoJSON data based on data parameters](#style-geojson-data-based-on-data-parameters)
     * [Color features by discrete category values](#color-features-by-discrete-category-values)
     * [Color features by a continuous value](#color-features-by-a-continuous-value)
+  * [Charts in JS](#charts-in-js)
+    * [Put a C3 chart on a page][#put-a-c3-chart-on-a-page]
 
 ## Git/GitHub
 
@@ -508,4 +510,49 @@ var dataLayer = L.geoJSON(/* mapdata OR null GOES HERE*/, {
   style: getStyle
 })
 dataLayer.addTo(map1);
+```
+
+## Charts in JS
+
+There are many JS charting libraries to choose from, but for the below examples I will use C3.
+
+### Put a C3 chart on a page
+
+In your head, add:
+
+```html
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css"
+ integrity="sha512-cznfNokevSG7QPA5dZepud8taylLdvgr0lDqw/FEZIhluFsSwyvS81CMnRdrNSKwbsmc43LtRd2/WMQV+Z85AQ=="
+ crossorigin="anonymous" referrerpolicy="no-referrer" />
+```
+
+In your body where you want the chart to show up, add:
+```html
+<div id="chart1"></div>
+```
+
+At the end of your body, add:
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"
+ integrity="sha512-FHsFVKQ/T1KWJDGSbrUhTJyS1ph3eRrxI228ND0EGaEp6v4a/vGwPWd3Dtd/+9cI7ccofZvl/wulICEurHN1pg=="
+ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"
+ integrity="sha512-+IpCthlNahOuERYUSnKFjzjdKXIbJ/7Dd6xvUp+7bEw0Jp2dg6tluyxLs+zq9BMzZgrLv8886T4cBSqnKiVgUw=="
+ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+  var dataForChart1 = [
+    ['Year Column', ...{{ chartdata['year'] }}],
+    ['Value Column', ...{{ chartdata['count'] }}],
+  ];
+  var chart1 = c3.generate({
+    bindto: '#chart1',
+    data: {
+      x: 'Year Column',
+      columns: dataForChart1,
+      type: 'bar'
+    }
+  });
+
+</script>
 ```
