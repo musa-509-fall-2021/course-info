@@ -20,7 +20,7 @@
     * [Color features by discrete category values](#color-features-by-discrete-category-values)
     * [Color features by a continuous value](#color-features-by-a-continuous-value)
   * [Charts in JS](#charts-in-js)
-    * [Put a C3 chart on a page][#put-a-c3-chart-on-a-page]
+    * [Put a C3 chart on a page](#put-a-c3-chart-on-a-page)
 
 ## Git/GitHub
 
