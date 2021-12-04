@@ -534,7 +534,7 @@ In your body where you want the chart to show up, add:
 ```
 
 Assuming:
-* You have a variable `chart1_data` that you are making available in your template with something like:
+* You have a variable `chart1_data` that you are making available in your template with something like this (note in this example I use `to_dict('list')`; I provide some explanation of what that does in [lab 09](https://github.com/musa-509-fall-2021/lab-09-modelling-and-rendering-data#add-chart-data-into-the-report)):
 
   ```py
   chart1_data_df = pd.read_gbq('SELECT * from final.chart1_data')
