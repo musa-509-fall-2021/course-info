@@ -19,8 +19,10 @@
   * [Style GeoJSON data based on data parameters](#style-geojson-data-based-on-data-parameters)
     * [Color features by discrete category values](#color-features-by-discrete-category-values)
     * [Color features by a continuous value](#color-features-by-a-continuous-value)
-  * [Charts in JS](#charts-in-js)
-    * [Put a C3 chart on a page](#put-a-c3-chart-on-a-page)
+* [Charts in JS](#charts-in-js)
+  * [Put a C3 chart on a page](#put-a-c3-chart-on-a-page)
+  * [Other Types of C3 Charts](#other-types-of-c3-charts)
+    * [Timeseries](#timeseries)
 
 ## Git/GitHub
 
@@ -531,6 +533,21 @@ In your body where you want the chart to show up, add:
 <div id="chart1"></div>
 ```
 
+Assuming:
+* You have a variable `chart1_data` that you are making available in your template with something like:
+
+  ```py
+  chart1_data_df = pd.read_gbq('SELECT * from final.chart1_data')
+
+  ...
+
+  output = template.render(
+      chart1_data=chart1_data_df.to_dict('list'),
+  )
+  ```
+* Your `chart1_data` table has two columns: `year` and `count`, and
+* You want to display these as a bar chart, then
+
 At the end of your body, add:
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"
@@ -542,8 +559,8 @@ At the end of your body, add:
 
 <script>
   var dataForChart1 = [
-    ['Year Column', ...{{ chartdata['year'] }}],
-    ['Value Column', ...{{ chartdata['count'] }}],
+    ['Year Column', ...{{ chart1_data['year'] }}],
+    ['Value Column', ...{{ chart1_data['count'] }}],
   ];
   var chart1 = c3.generate({
     bindto: '#chart1',
@@ -556,3 +573,30 @@ At the end of your body, add:
 
 </script>
 ```
+
+## Other Types of C3 Charts
+
+C3 supports a number of types of charts. See the documentation for [a list of all the chart types](https://c3js.org/reference.html#data-type) or for [examples of those chart types in use](https://c3js.org/examples.html).
+
+### Timeseries
+
+* Your table should have one column for the date or date/time, and one or more columns for the timeseries values
+* You should convert that column to a string using something like `CAST(my_date_column AS STRING) AS my_date_column`
+
+In your `script` element at the bottom of your `body`:
+```js
+var dataForChart1 = [
+  ['date_column', ...{{ chart1_data['my_date_column'] }}],
+  ['value_column', ...{{ chart1_data['my_value_column'] }}],
+];
+var chart1 = c3.generate({
+  bindto: '#chart1',
+  data: {
+    x: 'date_column',
+    columns: dataForChart1,
+    type: 'line'
+  },
+  axis: {
+    x: {type: 'timeseries'},
+  }
+});
