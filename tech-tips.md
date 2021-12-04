@@ -520,20 +520,11 @@ There are many JS charting libraries to choose from, but for the below examples 
 
 ### Put a C3 chart on a page
 
-In your head, add:
+Your first step for any chart is going to be to prepare your data. This will mean writing a SQL transform that produces a table appropriate for the chart.
 
-```html
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css"
- integrity="sha512-cznfNokevSG7QPA5dZepud8taylLdvgr0lDqw/FEZIhluFsSwyvS81CMnRdrNSKwbsmc43LtRd2/WMQV+Z85AQ=="
- crossorigin="anonymous" referrerpolicy="no-referrer" />
-```
+For most types of charts, you'll want at least two columns in your table: one for categories or x-axis values, and at least one for y-axis values. If your chart has multiple series, than you'll want a column for each series.
 
-In your body where you want the chart to show up, add:
-```html
-<div id="chart1"></div>
-```
-
-Assuming:
+The following sample will assume:
 * You have a variable `chart1_data` that you are making available in your template with something like this (note in this example I use `to_dict('list')`; I provide some explanation of what that does in [lab 09](https://github.com/musa-509-fall-2021/lab-09-modelling-and-rendering-data#add-chart-data-into-the-report)):
 
   ```py
@@ -545,8 +536,21 @@ Assuming:
       chart1_data=chart1_data_df.to_dict('list'),
   )
   ```
-* Your `chart1_data` table has two columns: `year` and `count`, and
-* You want to display these as a bar chart, then
+* Your `chart1_data` table has two columns: `year` and `count`
+* You want to display these as a bar chart
+
+In your `head`, add:
+
+```html
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css"
+ integrity="sha512-cznfNokevSG7QPA5dZepud8taylLdvgr0lDqw/FEZIhluFsSwyvS81CMnRdrNSKwbsmc43LtRd2/WMQV+Z85AQ=="
+ crossorigin="anonymous" referrerpolicy="no-referrer" />
+```
+
+In your `body` where you want the chart to show up, add:
+```html
+<div id="chart1"></div>
+```
 
 At the end of your body, add:
 ```html
