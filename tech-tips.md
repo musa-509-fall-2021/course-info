@@ -23,6 +23,7 @@
   * [Put a C3 chart on a page](#put-a-c3-chart-on-a-page)
   * [Other Types of C3 Charts](#other-types-of-c3-charts)
     * [Timeseries](#timeseries)
+    * [Categorical Bar Charts](#categorical-bar-charts)
 
 ## Git/GitHub
 
@@ -604,3 +605,36 @@ var chart1 = c3.generate({
     x: {type: 'timeseries'},
   }
 });
+```
+
+### Categorical Bar Charts
+
+If your bar chart categories are non-numeric (i.e., not years) then you will have
+to treat them differently than above.
+
+* Your table should have one column for the category, and one or more columns for the series values, e.g.:
+
+  | median_education (category) | demographic_1 (series) | demographic_2 (series) |
+  |----------|---------------|---------------|
+  | high school | 50 | 80 |
+  | some college | 30 | 15 |
+  | grad degree | 20 | 5 |
+
+In your `script` element at the bottom of your `body`:
+```js
+var categoriesForChart1 = {{ chart1_data['median_education'] }};
+var seriesForChart1 = [
+  ['demographic_1', ...{{ chart1_data['demographic_1'] }}],
+  ['demographic_2', ...{{ chart1_data['demographic_2'] }}],
+];
+var chart1 = c3.generate({
+  bindto: '#chart1',
+  data: {
+    columns: seriesForChart1,
+    type: 'bar'
+  },
+  axis: {
+    x: {categories: categoriesForChart1},
+  }
+});
+```
