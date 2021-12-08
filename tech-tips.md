@@ -312,6 +312,23 @@ Generally there are a few things that should be taken into account:
 * **Quoting identifiers (table/field names):** In both PostgreSQL and BigQuery you can refer to fields and tables without any quotes around them, but if the name of the table or field has any special characters (i.e., anything that's not a letter, a number, or an underscore) then you must use quotes. In PostgreSQL you would use `"..."`, but in BigQuery you would use `` `...` ``.
 * **Converting data types:** PostgreSQL has a special syntax for converting from one data type to another: the double-colon (`::`). That syntax is not available in BigQuery. However, the [standard SQL `CAST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/conversion_functions) function is available in BigQuery. See the docs for a list of BigQuery types for [numbers](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types), [strings](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type), and [dates/times](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type).
 * **Geospatial data:** In PostgreSQL's PostGIS extension there are `GEOMETRY` and `GEOGRAPHY` types, but BigQuery only has `GEOGRAPHY`. In many ways, this makes things much easier: you don't have to worry about coordinate systems because all coordinates are in degrees and all lengths are in meters. You'll just have to be aware of the [functions available](https://cloud.google.com/bigquery/docs/reference/standard-sql/geography_functions), as they will differ from the [plethora of functions](https://postgis.net/docs/manual-1.5/ch08.html) in PostGIS.
+* **Filtering in aggregate functions:** PostgreSQL allows you to use a `FILTER` keyword to limit the records that get included in an aggregation, e.g.:
+  ```sql
+  SELECT
+      geo_id,
+      COUNT(*) FILTER (WHERE /* condition 1 */) AS count1,
+      COUNT(*) FILTER (WHERE /* condition 2 */) AS count2
+  ...
+  ```
+  Specifically for filtering a count aggregation, BigQuery provides a [`COUNTIF`](https://cloud.google.com/bigquery/docs/reference/standard-sql/functions-and-operators#countif). For other aggregations (such as `SUM`, `MIN`, `AVG`, etc.) you can use the `CASE WHEN` pattern, e.g.:
+
+  ```sql
+  SELECT
+      geo_id,
+      SUM(CASE WHEN /* condition */ THEN field END) AS sum_of_field,
+      AVG(CASE WHEN /* condition */ THEN field END) AS avg_of_field
+  ...
+  ```
 
 There are also a number of analytic functions that BigQuery makes available that I find helpful (like [`NTILE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/functions-and-operators#ntile)), but aside from that, most things that you'll use are pretty similar between PostgreSQL and BigQuery.
 
