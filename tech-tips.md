@@ -11,6 +11,7 @@
   * [Writing a load module for non-geospatial data](#writing-a-load-module-for-non-geospatial-data)
   * [Writing a load module for geospatial data](#writing-a-load-module-for-geospatial-data)
   * [Writing an Airflow DAG for a pipeline](#writing-an-Airflow-DAG-for-a-pipeline)
+* [Syntactic Differences between PostgreSQL and BigQuery](#syntactic-differences-between-postgresql-and-bigquery)
 * [Mapping in JS](#mapping-in-js)
   * [Put a Leaflet map on a page](#put-a-leaflet-map-on-a-page)
   * [Use a different base layer](#use-a-different-base-layer)
@@ -303,6 +304,16 @@ with DAG(dag_id='data_pipeline',
 The above DAG definition would result in dependency graph like the following:
 
 ![Sample DAG dependency graph](sample-dependency-graph.png)
+
+## Syntactic Differences between PostgreSQL and BigQuery
+
+Generally there are a few things that should be taken into account:
+
+* **Quoting identifiers (table/field names):** In both PostgreSQL and BigQuery you can refer to fields and tables without any quotes around them, but if the name of the table or field has any special characters (i.e., anything that's not a letter, a number, or an underscore) then you must use quotes. In PostgreSQL you would use `"..."`, but in BigQuery you would use `` `...` ``.
+* **Converting data types:** PostgreSQL has a special syntax for converting from one data type to another: the double-colon (`::`). That syntax is not available in BigQuery. However, the [standard SQL `CAST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/conversion_functions) function is available in BigQuery. See the docs for a list of BigQuery types for [numbers](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types), [strings](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type), and [dates/times](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type).
+* **Geospatial data:** In PostgreSQL's PostGIS extension there are `GEOMETRY` and `GEOGRAPHY` types, but BigQuery only has `GEOGRAPHY`. In many ways, this makes things much easier: you don't have to worry about coordinate systems because all coordinates are in degrees and all lengths are in meters. You'll just have to be aware of the [functions available](https://cloud.google.com/bigquery/docs/reference/standard-sql/geography_functions), as they will differ from the [plethora of functions](https://postgis.net/docs/manual-1.5/ch08.html) in PostGIS.
+
+There are also a number of analytic functions that BigQuery makes available that I find helpful (like [`NTILE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/functions-and-operators#ntile)), but aside from that, most things that you'll use are pretty similar between PostgreSQL and BigQuery.
 
 ## Mapping in JS
 
