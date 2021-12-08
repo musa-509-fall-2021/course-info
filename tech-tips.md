@@ -662,7 +662,10 @@ var chart1 = c3.generate({
     type: 'bar'
   },
   axis: {
-    x: {categories: categoriesForChart1},
+    x: {
+      type: 'categories',
+      categories: categoriesForChart1
+    }
   }
 });
 ```
